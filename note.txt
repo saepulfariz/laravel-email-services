@@ -8,3 +8,13 @@ php artisan migrate
 php artisan queue:table
 php artisan migrate
 php artisan make:job SendEmailJob
+
+
+Jalankan Queue Worker
+php artisan queue:work
+
+Untuk production (recommended):
+
+php artisan queue:work --tries=3 --timeout=60
+
+Atau gunakan Supervisor (Linux VPS).

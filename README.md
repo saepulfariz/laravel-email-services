@@ -12,13 +12,41 @@ MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS=email@mail.com
 MAIL_FROM_NAME="Email Services"
 
-MAIL_API_KEY="12345678"
+MAIL_API_KEY=12345678
+```
+
+## Setup project
+
+- clone this project
+- composer update
+- php artisan key:generate
+- php artisan serve
+- then new terminal for queue : php artisan queue:work
+
+## Queue
+
+- For development
+
+```bash
+php artisan queue:work
+```
+
+- For production (recommended):
+
+```bash
+php artisan queue:work --tries=3 --timeout=60
 ```
 
 ## Use this api
 
-```
+```bash
 POST http://localhost:8000/api/email-services?apikey=123456789
+```
+
+- For api queue, add url /q/
+
+```bash
+POST http://localhost:8000/api/q/email-services?apikey=123456789
 ```
 
 ```json
