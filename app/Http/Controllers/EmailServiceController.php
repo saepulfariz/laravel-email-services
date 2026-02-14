@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmailLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
@@ -22,6 +23,18 @@ class EmailServiceController extends Controller
             'to' => 'required|string',
             'subject' => 'required|string',
             'body' => 'required|string',
+        ]);
+
+        // Save to DB first
+        $emailLog = EmailLog::create([
+            'to' => $request->to,
+            'cc' => $request->cc,
+            'bcc' => $request->bcc,
+            'reply_to' => $request->reply,
+            'subject' => $request->subject,
+            'body' => $request->body,
+            'attachments' => $request->attachments,
+            'status' => 'pending'
         ]);
 
         try {
@@ -65,15 +78,21 @@ class EmailServiceController extends Controller
                 }
             });
 
+            $emailLog->update([
+                'status' => 'sent'
+            ]);
+
             return response()->json([
                 'status' => true,
-                'message' => 'Email sent successfully'
+                'message' => 'Email sent successfully',
+                'log_id' => $emailLog->id
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
+                'log_id' => $emailLog->id
             ], 500);
         }
     }
