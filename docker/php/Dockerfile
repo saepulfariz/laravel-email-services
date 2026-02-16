@@ -55,13 +55,13 @@ COPY . .
 # Install dependencies (composer install)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Permission for CI4
+# Permission for storage
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 writable
+    && chmod -R 775 storage
 
 
-RUN mkdir -p writable/uploads \
+RUN mkdir -p storage/uploads \
     && rm -rf public/uploads \
-    && ln -s ../writable/uploads public/uploads
+    && ln -s ../storage/uploads public/uploads
 
 CMD ["php-fpm"]

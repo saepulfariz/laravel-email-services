@@ -23,6 +23,8 @@ MAIL_API_KEY=12345678
 - php artisan serve
 - then new terminal for queue : php artisan queue:work
 
+- echo -n 'base64:'; openssl rand -base64 32;
+
 ## Queue
 
 - For development
