@@ -27,5 +27,17 @@ services:
     networks:
       - laravel_net
 
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: laravel_queue
+    restart: always
+    command: php artisan queue:work --sleep=3 --tries=3 --timeout=90
+    depends_on:
+      - app
+    networks:
+      - laravel_net
+
 networks:
   laravel_net:
