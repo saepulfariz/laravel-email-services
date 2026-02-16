@@ -12,7 +12,7 @@ class QueueEmailServiceController extends Controller
 
     public function send(Request $request)
     {
-        if ($request->query('apikey') !== env('SERVICES_EMAIL')) {
+        if ($request->query('apikey') !== env('MAIL_API_KEY')) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid API Key'
