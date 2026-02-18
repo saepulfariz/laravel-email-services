@@ -11,6 +11,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
+use App\Services\EmailService;
+
 class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
@@ -22,49 +24,11 @@ class SendEmailJob implements ShouldQueue
         $this->emailLog = $emailLog;
     }
 
-    public function handle()
+    public function handle(EmailService $emailService)
     {
         try {
 
-            $to = explode(';', $this->emailLog->to);
-            $cc = $this->emailLog->cc ? explode(';', $this->emailLog->cc) : [];
-            $bcc = $this->emailLog->bcc ? explode(';', $this->emailLog->bcc) : [];
-            $reply = $this->emailLog->reply_to ? explode(';', $this->emailLog->reply_to) : [];
-
-            $type = $this->emailLog->type === 'public' ? 'public' : 'smtp';
-
-            Mail::mailer($type)->send([], [], function ($message) use ($to, $cc, $bcc, $reply, $type) {
-
-                if ($type === 'public') {
-                    $message->from(
-                        config('mail.mailers.public.username'),
-                        env('MAIL_PUBLIC_FROM_NAME')
-                    );
-                }
-
-                $message->to($to)
-                    ->subject($this->emailLog->subject)
-                    ->html($this->emailLog->body);
-                // ->setBody($this->emailLog->body, 'text/html');
-
-                if (!empty($cc)) $message->cc($cc);
-                if (!empty($bcc)) $message->bcc($bcc);
-                if (!empty($reply)) $message->replyTo($reply);
-
-                // Attachments
-                if ($this->emailLog->attachments) {
-                    foreach ($this->emailLog->attachments as $file) {
-
-                        $fileContent = Http::get($file['url'])->body();
-
-                        $message->attachData(
-                            $fileContent,
-                            $file['filename'],
-                            ['mime' => $file['mime']]
-                        );
-                    }
-                }
-            });
+            $emailService->send($this->emailLog);
 
             $this->emailLog->update([
                 'status' => 'sent'

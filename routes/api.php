@@ -9,5 +9,6 @@ use App\Http\Controllers\QueueEmailServiceController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::post('/email-services', [EmailServiceController::class, 'send']);
+Route::post('/email-services', [QueueEmailServiceController::class, 'send']);
+Route::post('/d/email-services', [EmailServiceController::class, 'send']);
 Route::post('/q/email-services', [QueueEmailServiceController::class, 'send']);
