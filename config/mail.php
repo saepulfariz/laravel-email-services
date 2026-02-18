@@ -49,6 +49,17 @@ return [
             'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
         ],
 
+        'public' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_PUBLIC_HOST'),
+            'port' => env('MAIL_PUBLIC_PORT'),
+            'encryption' => env('MAIL_PUBLIC_ENCRYPTION'),
+            'username' => env('MAIL_PUBLIC_USERNAME'),
+            'password' => env('MAIL_PUBLIC_PASSWORD'),
+            'timeout' => null,
+            'auth_mode' => null,
+        ],
+
         'ses' => [
             'transport' => 'ses',
         ],

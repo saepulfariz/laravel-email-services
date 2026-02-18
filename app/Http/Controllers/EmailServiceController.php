@@ -44,7 +44,16 @@ class EmailServiceController extends Controller
             $bcc = $request->bcc ? explode(';', $request->bcc) : [];
             $reply = $request->reply ? explode(';', $request->reply) : [];
 
-            Mail::send([], [], function ($message) use ($request, $to, $cc, $bcc, $reply) {
+            $type = $request->type === 'public' ? 'public' : 'smtp';
+
+            Mail::mailer($type)->send([], [], function ($message) use ($request, $to, $cc, $bcc, $reply, $type) {
+
+                if ($type === 'public') {
+                    $message->from(
+                        config('mail.mailers.public.username'),
+                        env('MAIL_PUBLIC_FROM_NAME')
+                    );
+                }
 
                 $message->to($to)
                     ->subject($request->subject)

@@ -34,7 +34,8 @@ class QueueEmailServiceController extends Controller
             'subject' => $request->subject,
             'body' => $request->body,
             'attachments' => $request->attachments,
-            'status' => 'pending'
+            'status' => 'pending',
+            'type' => $request->type
         ]);
 
         // Dispatch to queue

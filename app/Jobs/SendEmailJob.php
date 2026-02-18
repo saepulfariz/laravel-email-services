@@ -31,7 +31,16 @@ class SendEmailJob implements ShouldQueue
             $bcc = $this->emailLog->bcc ? explode(';', $this->emailLog->bcc) : [];
             $reply = $this->emailLog->reply_to ? explode(';', $this->emailLog->reply_to) : [];
 
-            Mail::send([], [], function ($message) use ($to, $cc, $bcc, $reply) {
+            $type = $this->emailLog->type === 'public' ? 'public' : 'smtp';
+
+            Mail::mailer($type)->send([], [], function ($message) use ($to, $cc, $bcc, $reply, $type) {
+
+                if ($type === 'public') {
+                    $message->from(
+                        config('mail.mailers.public.username'),
+                        env('MAIL_PUBLIC_FROM_NAME')
+                    );
+                }
 
                 $message->to($to)
                     ->subject($this->emailLog->subject)
