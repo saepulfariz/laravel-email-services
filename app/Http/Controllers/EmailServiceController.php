@@ -4,8 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\EmailLog;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Http;
 use App\Services\EmailService;
 
 class EmailServiceController extends Controller

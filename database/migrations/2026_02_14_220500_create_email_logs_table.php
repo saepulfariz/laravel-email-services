@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('email_logs', function (Blueprint $table) {
             $table->id();
+            $table->string('type')->nullable();
             $table->text('to');
             $table->text('cc')->nullable();
             $table->text('bcc')->nullable();
