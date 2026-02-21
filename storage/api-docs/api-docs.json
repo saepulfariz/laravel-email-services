@@ -1,0 +1,324 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Email Service API",
+        "description": "API untuk mengirim email Direct dan Queue",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost",
+            "description": "Current Server"
+        },
+        {
+            "url": "http://localhost:8000",
+            "description": "Local Server"
+        }
+    ],
+    "paths": {
+        "/api/email-services": {
+            "post": {
+                "tags": [
+                    "Email"
+                ],
+                "summary": "Send Email via",
+                "operationId": "fa342c038341e910c720d59f5d5c1732",
+                "parameters": [
+                    {
+                        "name": "apikey",
+                        "in": "query",
+                        "description": "API Key untuk autentikasi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Jenis mailer (default smtp)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "smtp",
+                            "enum": [
+                                "smtp",
+                                "public"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email1@domain.com;email2@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    },
+                                    "cc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "bcc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "reply": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string",
+                                                    "example": "gambar.jpg"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "https://example.com/file.jpg"
+                                                },
+                                                "mime": {
+                                                    "type": "string",
+                                                    "example": "image/jpeg"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email queued successfully"
+                    },
+                    "401": {
+                        "description": "Invalid API Key"
+                    }
+                }
+            }
+        },
+        "/api/d/email-services": {
+            "post": {
+                "tags": [
+                    "Email Direct"
+                ],
+                "summary": "Send Email Direct",
+                "operationId": "f82653e1b1dbdd74b120bafcccd53afa",
+                "parameters": [
+                    {
+                        "name": "apikey",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "smtp",
+                            "enum": [
+                                "smtp",
+                                "public"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email sent successfully"
+                    }
+                }
+            }
+        },
+        "/api/q/email-services": {
+            "post": {
+                "tags": [
+                    "Email Queue"
+                ],
+                "summary": "Send Email via Queue",
+                "operationId": "6b70a58d632143e27c162287debdd4f2",
+                "parameters": [
+                    {
+                        "name": "apikey",
+                        "in": "query",
+                        "description": "API Key untuk autentikasi",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Jenis mailer (default smtp)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "smtp",
+                            "enum": [
+                                "smtp",
+                                "public"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email1@domain.com;email2@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    },
+                                    "cc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "bcc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "reply": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string",
+                                                    "example": "gambar.jpg"
+                                                },
+                                                "url": {
+                                                    "type": "string",
+                                                    "example": "https://example.com/file.jpg"
+                                                },
+                                                "mime": {
+                                                    "type": "string",
+                                                    "example": "image/jpeg"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email queued successfully"
+                    },
+                    "401": {
+                        "description": "Invalid API Key"
+                    }
+                }
+            }
+        },
+        "/api/test": {
+            "get": {
+                "tags": [
+                    "Test"
+                ],
+                "summary": "Test endpoint",
+                "operationId": "7c2e6b5602b42636e41cc7228a9d8765",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Email",
+            "description": "Email"
+        },
+        {
+            "name": "Email Direct",
+            "description": "Email Direct"
+        },
+        {
+            "name": "Email Queue",
+            "description": "Email Queue"
+        },
+        {
+            "name": "Test",
+            "description": "Test"
+        }
+    ]
+}

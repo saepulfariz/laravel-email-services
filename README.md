@@ -81,9 +81,9 @@ attachments (json)
 {
     "to": "email@domain.com",
 
-    "subject": "TESTING JSON",
+    "subject": "Hello World",
 
-    "body": "BODY JSON",
+    "body": "Body Message",
 
     "attachments": [
         {

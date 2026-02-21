@@ -18,3 +18,15 @@ Untuk production (recommended):
 php artisan queue:work --tries=3 --timeout=60
 
 Atau gunakan Supervisor (Linux VPS).
+
+composer require darkaonline/l5-swagger
+php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+php artisan l5-swagger:generate
+
+composer show | findstr swagger
+darkaonline/l5-swagger             10.1.0  OpenApi or Swagger integration to Laravel
+swagger-api/swagger-ui             5.31.1   Swagger UI is a collection of HTML, Javascript, and CSS assets that dy...
+zircote/swagger-php                6.0.5   Generate interactive documentation for your RESTful API using PHP attri...
+
+php artisan --version
+Laravel Framework 12.51.0
