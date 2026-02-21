@@ -1,0 +1,23 @@
+# Ignore env / secrets
+.env
+.env.*.local
+
+# Ignore node_modules & build artifacts
+node_modules
+dist
+
+# Ignore storage logs & temp
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Ignore OS / editor files
+.DS_Store
+Thumbs.db
+*.swp
+.idea
+.vscode
+
+# Ignore composer cache
+vendor/composer

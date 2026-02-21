@@ -1,6 +1,8 @@
 FROM php:8.2-fpm
 
+# -------------------------------
 # Install system deps
+# -------------------------------
 RUN apt-get update && apt-get install -y \
     gnupg2 \
     unixodbc \
@@ -16,6 +18,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
+    ca-certificates \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install \
         mysqli \
@@ -28,11 +31,12 @@ RUN apt-get update && apt-get install -y \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 
-# ARG untuk timezone
+# -------------------------------
+# ARG & timezone
+# -------------------------------
 ARG APP_TIMEZONE=Asia/Jakarta
 ENV TZ=${APP_TIMEZONE}
 
-# Install tzdata dan set timezone
 RUN apt-get update && apt-get install -y tzdata \
     && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
     && echo $TZ > /etc/timezone \
@@ -43,7 +47,9 @@ RUN apt-get update && apt-get install -y tzdata \
 # Set PHP timezone
 RUN echo "date.timezone=$TZ" > /usr/local/etc/php/conf.d/timezone.ini
 
-# Microsoft ODBC Driver
+# -------------------------------
+# Setup Microsoft ODBC Driver
+# -------------------------------
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
     | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg \
     && curl -fsSL https://packages.microsoft.com/config/debian/12/prod.list \
@@ -55,7 +61,9 @@ RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
 RUN pecl install sqlsrv pdo_sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv
 
+# -------------------------------
 # Install Composer
+# -------------------------------
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
@@ -69,13 +77,28 @@ COPY . .
 # Install dependencies (composer install)
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Permission for storage
+# -------------------------------
+# Setup storage
+# -------------------------------
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 storage
-
 
 RUN mkdir -p storage/uploads \
     && rm -rf public/uploads \
     && ln -s ../storage/uploads public/uploads
 
+# -------------------------------
+# Setup cacert.pem untuk cURL & PHP
+# -------------------------------
+RUN curl -fsSL https://curl.se/ca/cacert.pem -o /usr/local/share/ca-certificates/cacert.pem \
+    && chmod 644 /usr/local/share/ca-certificates/cacert.pem \
+    && update-ca-certificates
+
+# Override PHP cURL + OpenSSL default CA
+RUN echo "openssl.cafile=/usr/local/share/ca-certificates/cacert.pem" > /usr/local/etc/php/conf.d/cacert.ini \
+    && echo "curl.cainfo=/usr/local/share/ca-certificates/cacert.pem" >> /usr/local/etc/php/conf.d/cacert.ini
+
+# -------------------------------
+# CMD
+# -------------------------------
 CMD ["php-fpm"]

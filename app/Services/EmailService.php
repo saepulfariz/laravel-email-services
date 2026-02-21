@@ -36,7 +36,15 @@ class EmailService
 
             if ($emailLog->attachments) {
                 foreach ($emailLog->attachments as $file) {
-                    $fileContent = Http::get($file['url'])->body();
+                    $ignoreSsl = env('HTTP_IGNORE_SSL', false);
+
+                    if ($ignoreSsl) {
+                        // Tanpa verifikasi SSL
+                        $fileContent = Http::withoutVerifying()->get($file['url'])->body();
+                    } else {
+                        // Normal dengan verifikasi SSL
+                        $fileContent = Http::get($file['url'])->body();
+                    }
 
                     $message->attachData(
                         $fileContent,
