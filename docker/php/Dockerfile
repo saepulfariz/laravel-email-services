@@ -28,6 +28,20 @@ RUN apt-get update && apt-get install -y \
         opcache \
     && rm -rf /var/lib/apt/lists/*
 
+# ARG untuk timezone
+ARG APP_TIMEZONE=Asia/Jakarta
+ENV TZ=${APP_TIMEZONE}
+
+# Install tzdata dan set timezone
+RUN apt-get update && apt-get install -y tzdata \
+    && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
+    && echo $TZ > /etc/timezone \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set PHP timezone
+RUN echo "date.timezone=$TZ" > /usr/local/etc/php/conf.d/timezone.ini
 
 # Microsoft ODBC Driver
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc \
