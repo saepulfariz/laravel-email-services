@@ -127,6 +127,7 @@ class QueueEmailServiceController extends Controller
 
         // Save to DB first
         $emailLog = EmailLog::create([
+            'token' => $request->query('apikey'),
             'to' => $request->to,
             'cc' => $request->cc,
             'bcc' => $request->bcc,

@@ -12,7 +12,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('email_logs', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
+            $table->uuid('id')->primary(); // UUID sebagai primary key
+            $table->string('token')->nullable();
             $table->string('type')->nullable();
             $table->text('to');
             $table->text('cc')->nullable();
