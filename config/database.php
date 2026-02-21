@@ -111,6 +111,14 @@ return [
             'prefix_indexes' => true,
             'encrypt' => env('DB_ENCRYPT', 'no'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+            // 'encrypt' => 'no',   // <-- STRING
+            // 'trust_server_certificate' => 'yes', // <-- STRING
+            // 'encrypt' => 'no',
+            // 'trust_server_certificate' => true,
+            'options' => array(
+                // Comment out or remove this line:
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+            ),
         ],
 
     ],

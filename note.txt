@@ -30,3 +30,12 @@ zircote/swagger-php                6.0.5   Generate interactive documentation fo
 
 php artisan --version
 Laravel Framework 12.51.0
+
+Download last update
+https://learn.microsoft.com/en-us/sql/connect/php/download-drivers-php-sql-server?view=sql-server-ver17
+
+ZTS (Thread Safe)	_ts_
+NTS (Non Thread Safe)	_nts_
+
+php artisan config:clear
+php artisan cache:clear
