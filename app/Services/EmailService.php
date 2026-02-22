@@ -38,18 +38,18 @@ class EmailService
                 foreach ($emailLog->attachments as $file) {
                     $ignoreSsl = env('HTTP_IGNORE_SSL', false);
 
-                    if ($ignoreSsl) {
-                        // Tanpa verifikasi SSL
-                        $fileContent = Http::withoutVerifying()->get($file['url'])->body();
-                    } else {
-                        // Normal dengan verifikasi SSL
-                        $fileContent = Http::get($file['url'])->body();
-                    }
+                    $fileResponse = $ignoreSsl
+                        ? Http::withoutVerifying()->get($file['url'])
+                        : Http::get($file['url']);
+
+                    $fileContent = $fileResponse->body();
+                    $mimeType = $fileResponse->header('Content-Type');
+                    // $file['mime']
 
                     $message->attachData(
                         $fileContent,
                         $file['filename'],
-                        ['mime' => $file['mime']]
+                        ['mime' => $mimeType]
                     );
                 }
             }
