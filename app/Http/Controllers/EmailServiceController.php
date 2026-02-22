@@ -201,14 +201,14 @@ class EmailServiceController extends Controller
             ]);
 
             return response()->json([
-                'status' => true,
+                'success' => true,
                 'message' => 'Email sent successfully',
                 'log_id' => $emailLog->id
             ]);
         } catch (\Exception $e) {
 
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => $e->getMessage(),
                 'log_id' => $emailLog->id
             ], 500);

@@ -114,7 +114,7 @@ class QueueEmailServiceController extends Controller
     {
         if ($request->query('apikey') !== env('MAIL_API_KEY')) {
             return response()->json([
-                'status' => false,
+                'success' => false,
                 'message' => 'Invalid API Key'
             ], 401);
         }
@@ -143,7 +143,7 @@ class QueueEmailServiceController extends Controller
         SendEmailJob::dispatch($emailLog);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Email queued successfully',
             'log_id' => $emailLog->id
         ]);
