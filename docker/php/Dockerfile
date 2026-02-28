@@ -101,9 +101,9 @@ RUN echo "openssl.cafile=/usr/local/share/ca-certificates/cacert.pem" > /usr/loc
 # -------------------------------
 # CMD
 # -------------------------------
-# CMD ["php-fpm"]
+CMD ["php-fpm"]
 
-COPY docker/php/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+# COPY docker/php/entrypoint.sh /entrypoint.sh
+# RUN chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
