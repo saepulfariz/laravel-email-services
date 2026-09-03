@@ -7,16 +7,56 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
     /**
+     * Get the base query for users with search and sort applied.
+     */
+    private function getUserQuery(Request $request)
+    {
+        $query = User::query();
+
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('username', 'like', "%{$search}%");
+            });
+        }
+
+        // Sort
+        $sort = $request->get('sort', 'created_at');
+        $direction = $request->get('direction', 'desc');
+        
+        // Validate sort columns to prevent SQL injection
+        $allowedSorts = ['name', 'email', 'is_active', 'created_at'];
+        if (in_array($sort, $allowedSorts)) {
+            $query->orderBy($sort, $direction === 'asc' ? 'asc' : 'desc');
+        }
+
+        return $query;
+    }
+
+    /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users = $this->getUserQuery($request)->paginate(10)->withQueryString();
         return view('users.index', compact('users'));
+    }
+
+    /**
+     * Export the users to Excel.
+     */
+    public function export(Request $request)
+    {
+        return Excel::download(new UsersExport($this->getUserQuery($request)), 'users.xlsx');
     }
 
     /**

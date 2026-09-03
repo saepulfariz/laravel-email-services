@@ -18,5 +18,6 @@ Route::middleware('auth')->group(function () {
         return view('dashboard', compact('logs'));
     });
     
+    Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('users', UserController::class)->except(['show']);
 });
