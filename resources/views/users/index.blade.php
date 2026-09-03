@@ -27,8 +27,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>User</th>
                         <th>Email</th>
+                        <th>Status</th>
                         <th>Joined</th>
                         <th>Actions</th>
                     </tr>
@@ -36,8 +37,31 @@
                 <tbody>
                     @forelse($users as $user)
                         <tr>
-                            <td class="font-medium">{{ $user->name }}</td>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    @if($user->image)
+                                        <img src="{{ Storage::url($user->image) }}" alt="" class="w-8 h-8 rounded-full object-cover border border-hairline">
+                                    @else
+                                        <div class="w-8 h-8 rounded-full bg-surface border border-hairline flex items-center justify-center text-steel font-medium text-xs">
+                                            {{ strtoupper(substr($user->name, 0, 1)) }}
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <div class="font-medium text-ink">{{ $user->name }}</div>
+                                        @if($user->username)
+                                            <div class="text-[12px] text-steel">{{ '@' . $user->username }}</div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
                             <td>{{ $user->email }}</td>
+                            <td>
+                                @if($user->is_active)
+                                    <span class="badge success">Active</span>
+                                @else
+                                    <span class="badge" style="background: var(--surface); color: var(--steel);">Inactive</span>
+                                @endif
+                            </td>
                             <td class="text-steel">{{ $user->created_at->format('M d, Y') }}</td>
                             <td>
                                 <div class="flex gap-2">

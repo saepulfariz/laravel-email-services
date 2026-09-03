@@ -69,12 +69,16 @@
                 </div>
 
                 <div class="mt-auto pt-4 border-t border-hairline-soft flex items-center gap-3 px-2">
-                    <div class="w-9 h-9 rounded-full bg-surface border border-hairline flex items-center justify-center text-steel font-medium text-sm">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    </div>
+                    @if(auth()->user()->image)
+                        <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile" class="w-9 h-9 rounded-full object-cover border border-hairline">
+                    @else
+                        <div class="w-9 h-9 rounded-full bg-surface border border-hairline flex items-center justify-center text-steel font-medium text-sm">
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        </div>
+                    @endif
                     <div class="flex-1 overflow-hidden">
                         <div class="text-sm font-medium text-ink truncate">{{ auth()->user()->name }}</div>
-                        <div class="text-[11px] text-steel truncate">{{ auth()->user()->email }}</div>
+                        <div class="text-[11px] text-steel truncate">{{ auth()->user()->username ? '@' . auth()->user()->username : auth()->user()->email }}</div>
                     </div>
                 </div>
             </aside>

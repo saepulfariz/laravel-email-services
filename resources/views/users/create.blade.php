@@ -17,7 +17,7 @@
             </div>
         @endif
 
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="input-group">
@@ -26,8 +26,25 @@
             </div>
 
             <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="text-input" value="{{ old('username') }}">
+            </div>
+
+            <div class="input-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" class="text-input" required value="{{ old('email') }}">
+            </div>
+
+            <div class="input-group">
+                <label for="image">Profile Image</label>
+                <input type="file" id="image" name="image" class="text-input" accept="image/*">
+            </div>
+
+            <div class="input-group">
+                <label class="flex items-center gap-2 cursor-pointer mt-2">
+                    <input type="checkbox" name="is_active" value="1" checked>
+                    <span class="text-sm font-medium text-ink">Active User</span>
+                </label>
             </div>
 
             <div class="input-group">
