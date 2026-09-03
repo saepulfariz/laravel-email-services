@@ -51,6 +51,49 @@
                 "requestBody": {
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email1@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    },
+                                    "cc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "bcc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "reply": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "files[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
                                 "required": [
@@ -152,6 +195,37 @@
                 "requestBody": {
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email1@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    },
+                                    "files[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
                                 "required": [
@@ -171,6 +245,23 @@
                                     "body": {
                                         "type": "string",
                                         "example": "Body Message"
+                                    },
+                                    "attachments": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "filename": {
+                                                    "type": "string"
+                                                },
+                                                "url": {
+                                                    "type": "string"
+                                                },
+                                                "mime": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     }
                                 },
                                 "type": "object"
@@ -220,6 +311,49 @@
                 "requestBody": {
                     "required": true,
                     "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "to",
+                                    "subject",
+                                    "body"
+                                ],
+                                "properties": {
+                                    "to": {
+                                        "type": "string",
+                                        "example": "email1@domain.com"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Hello World"
+                                    },
+                                    "body": {
+                                        "type": "string",
+                                        "example": "Body Message"
+                                    },
+                                    "cc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "bcc": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "reply": {
+                                        "type": "string",
+                                        "example": "email2@domain.com"
+                                    },
+                                    "files[]": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
                         "application/json": {
                             "schema": {
                                 "required": [

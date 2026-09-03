@@ -36,65 +36,86 @@ class EmailServiceController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(
-                required: ["to", "subject", "body"],
-                properties: [
-                    new OA\Property(
-                        property: "to",
-                        type: "string",
-                        example: "email1@domain.com;email2@domain.com"
-                    ),
-                    new OA\Property(
-                        property: "subject",
-                        type: "string",
-                        example: "Hello World"
-                    ),
-                    new OA\Property(
-                        property: "body",
-                        type: "string",
-                        example: "Body Message"
-                    ),
-                    new OA\Property(
-                        property: "cc",
-                        type: "string",
-                        example: "email2@domain.com"
-                    ),
-                    new OA\Property(
-                        property: "bcc",
-                        type: "string",
-                        example: "email2@domain.com"
-                    ),
-                    new OA\Property(
-                        property: "reply",
-                        type: "string",
-                        example: "email2@domain.com"
-                    ),
-                    new OA\Property(
-                        property: "attachments",
-                        type: "array",
-                        items: new OA\Items(
-                            type: "object",
-                            properties: [
-                                new OA\Property(
-                                    property: "filename",
-                                    type: "string",
-                                    example: "gambar.jpg"
-                                ),
-                                new OA\Property(
-                                    property: "url",
-                                    type: "string",
-                                    example: "https://example.com/file.jpg"
-                                ),
-                                new OA\Property(
-                                    property: "mime",
-                                    type: "string",
-                                    example: "image/jpeg"
-                                ),
-                            ]
-                        )
-                    ),
-                ]
-            )
+            content: [
+                new OA\JsonContent(
+                    required: ["to", "subject", "body"],
+                    properties: [
+                        new OA\Property(
+                            property: "to",
+                            type: "string",
+                            example: "email1@domain.com;email2@domain.com"
+                        ),
+                        new OA\Property(
+                            property: "subject",
+                            type: "string",
+                            example: "Hello World"
+                        ),
+                        new OA\Property(
+                            property: "body",
+                            type: "string",
+                            example: "Body Message"
+                        ),
+                        new OA\Property(
+                            property: "cc",
+                            type: "string",
+                            example: "email2@domain.com"
+                        ),
+                        new OA\Property(
+                            property: "bcc",
+                            type: "string",
+                            example: "email2@domain.com"
+                        ),
+                        new OA\Property(
+                            property: "reply",
+                            type: "string",
+                            example: "email2@domain.com"
+                        ),
+                        new OA\Property(
+                            property: "attachments",
+                            type: "array",
+                            items: new OA\Items(
+                                type: "object",
+                                properties: [
+                                    new OA\Property(
+                                        property: "filename",
+                                        type: "string",
+                                        example: "gambar.jpg"
+                                    ),
+                                    new OA\Property(
+                                        property: "url",
+                                        type: "string",
+                                        example: "https://example.com/file.jpg"
+                                    ),
+                                    new OA\Property(
+                                        property: "mime",
+                                        type: "string",
+                                        example: "image/jpeg"
+                                    ),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                new OA\MediaType(
+                    mediaType: "multipart/form-data",
+                    schema: new OA\Schema(
+                        required: ["to", "subject", "body"],
+                        properties: [
+                            new OA\Property(property: "to", type: "string", example: "email1@domain.com"),
+                            new OA\Property(property: "subject", type: "string", example: "Hello World"),
+                            new OA\Property(property: "body", type: "string", example: "Body Message"),
+                            new OA\Property(property: "cc", type: "string", example: "email2@domain.com"),
+                            new OA\Property(property: "bcc", type: "string", example: "email2@domain.com"),
+                            new OA\Property(property: "reply", type: "string", example: "email2@domain.com"),
+                            new OA\Property(
+                                property: "files[]",
+                                type: "array",
+                                items: new OA\Items(type: "string", format: "binary")
+                            )
+                        ]
+                    )
+                )
+            ]
         ),
         responses: [
             new OA\Response(
@@ -133,26 +154,56 @@ class EmailServiceController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(
-                required: ["to", "subject", "body"],
-                properties: [
-                    new OA\Property(
-                        property: "to",
-                        type: "string",
-                        example: "email2@domain.com"
-                    ),
-                    new OA\Property(
-                        property: "subject",
-                        type: "string",
-                        example: "Hello World"
-                    ),
-                    new OA\Property(
-                        property: "body",
-                        type: "string",
-                        example: "Body Message"
-                    ),
-                ]
-            )
+            content: [
+                new OA\JsonContent(
+                    required: ["to", "subject", "body"],
+                    properties: [
+                        new OA\Property(
+                            property: "to",
+                            type: "string",
+                            example: "email2@domain.com"
+                        ),
+                        new OA\Property(
+                            property: "subject",
+                            type: "string",
+                            example: "Hello World"
+                        ),
+                        new OA\Property(
+                            property: "body",
+                            type: "string",
+                            example: "Body Message"
+                        ),
+                        new OA\Property(
+                            property: "attachments",
+                            type: "array",
+                            items: new OA\Items(
+                                type: "object",
+                                properties: [
+                                    new OA\Property(property: "filename", type: "string"),
+                                    new OA\Property(property: "url", type: "string"),
+                                    new OA\Property(property: "mime", type: "string"),
+                                ]
+                            )
+                        ),
+                    ]
+                ),
+                new OA\MediaType(
+                    mediaType: "multipart/form-data",
+                    schema: new OA\Schema(
+                        required: ["to", "subject", "body"],
+                        properties: [
+                            new OA\Property(property: "to", type: "string", example: "email1@domain.com"),
+                            new OA\Property(property: "subject", type: "string", example: "Hello World"),
+                            new OA\Property(property: "body", type: "string", example: "Body Message"),
+                            new OA\Property(
+                                property: "files[]",
+                                type: "array",
+                                items: new OA\Items(type: "string", format: "binary")
+                            )
+                        ]
+                    )
+                )
+            ]
         ),
         responses: [
             new OA\Response(
@@ -178,6 +229,20 @@ class EmailServiceController extends Controller
             'body' => 'required|string',
         ]);
 
+        // Handle uploaded files
+        $attachments = $request->input('attachments', []);
+        
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('attachments', 'public');
+                $attachments[] = [
+                    'filename' => $file->getClientOriginalName(),
+                    'path' => storage_path('app/public/' . $path),
+                    'mime' => $file->getMimeType(),
+                ];
+            }
+        }
+
         // Save to DB first
         $emailLog = EmailLog::create([
             'token' => $request->query('apikey'),
@@ -188,7 +253,7 @@ class EmailServiceController extends Controller
             'subject' => $request->subject,
             'body' => $request->body,
             'type' => $request->type,
-            'attachments' => $request->attachments,
+            'attachments' => empty($attachments) ? null : $attachments,
             'status' => 'pending'
         ]);
 

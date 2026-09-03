@@ -36,21 +36,29 @@ class EmailService
 
             if ($emailLog->attachments) {
                 foreach ($emailLog->attachments as $file) {
-                    $ignoreSsl = env('HTTP_IGNORE_SSL', false);
+                    if (isset($file['path'])) {
+                        // Local file uploaded via multipart
+                        $message->attach($file['path'], [
+                            'as' => $file['filename'] ?? basename($file['path']),
+                            'mime' => $file['mime'] ?? null,
+                        ]);
+                    } elseif (isset($file['url'])) {
+                        // Remote file via URL
+                        $ignoreSsl = env('HTTP_IGNORE_SSL', false);
 
-                    $fileResponse = $ignoreSsl
-                        ? Http::withoutVerifying()->get($file['url'])
-                        : Http::get($file['url']);
+                        $fileResponse = $ignoreSsl
+                            ? Http::withoutVerifying()->get($file['url'])
+                            : Http::get($file['url']);
 
-                    $fileContent = $fileResponse->body();
-                    $mimeType = $fileResponse->header('Content-Type');
-                    // $file['mime']
+                        $fileContent = $fileResponse->body();
+                        $mimeType = $fileResponse->header('Content-Type');
 
-                    $message->attachData(
-                        $fileContent,
-                        $file['filename'],
-                        ['mime' => $mimeType]
-                    );
+                        $message->attachData(
+                            $fileContent,
+                            $file['filename'],
+                            ['mime' => $mimeType]
+                        );
+                    }
                 }
             }
         });
