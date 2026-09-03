@@ -11,7 +11,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
         rel="stylesheet">
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
@@ -61,8 +61,9 @@
             <aside class="sidebar" id="sidebar">
                 <div class="flex-1 flex flex-col gap-2">
                     <div class="sidebar-section">Overview</div>
-                    <a href="/dashboard" class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">Recent Activity</a>
-    
+                    <a href="/dashboard" class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">Recent
+                        Activity</a>
+
                     <div class="sidebar-section">Configuration</div>
                     <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}">Manage Users</a>
                     <a href="#" class="sidebar-item">API Keys</a>
@@ -70,15 +71,19 @@
 
                 <div class="mt-auto pt-4 border-t border-hairline-soft flex items-center gap-3 px-2">
                     @if(auth()->user()->image)
-                        <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile" class="w-9 h-9 rounded-full object-cover border border-hairline">
+                        <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile"
+                            class="w-9 h-9 rounded-full object-cover border border-hairline">
                     @else
-                        <div class="w-9 h-9 rounded-full bg-surface border border-hairline flex items-center justify-center text-steel font-medium text-sm">
+                        <div
+                            class="w-9 h-9 rounded-full bg-surface border border-hairline flex items-center justify-center text-steel font-medium text-sm">
                             {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                         </div>
                     @endif
                     <div class="flex-1 overflow-hidden">
                         <div class="text-sm font-medium text-ink truncate">{{ auth()->user()->name }}</div>
-                        <div class="text-[11px] text-steel truncate">{{ auth()->user()->username ? '@' . auth()->user()->username : auth()->user()->email }}</div>
+                        <div class="text-[11px] text-steel truncate">
+                            {{ auth()->user()->username ? '@' . auth()->user()->username : auth()->user()->email }}
+                        </div>
                     </div>
                 </div>
             </aside>
@@ -94,7 +99,29 @@
             document.getElementById('sidebar')?.classList.toggle('open');
             document.querySelector('.overlay')?.classList.toggle('open');
         }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: "{{ session('success') }}",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#00d4a4',
+                });
+            @endif
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: "{{ session('error') }}",
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#d45656',
+                });
+            @endif
+        });
     </script>
+    @yield('scripts')
 </body>
 
 </html>

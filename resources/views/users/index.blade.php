@@ -11,16 +11,6 @@
         <a href="{{ route('users.create') }}" class="btn-primary">Add User</a>
     </div>
 
-    @if (session('success'))
-        <div class="badge success p-3 text-sm mb-6 block font-medium normal-case">
-            {{ session('success') }}
-        </div>
-    @endif
-    @if (session('error'))
-        <div class="alert-error">
-            {{ session('error') }}
-        </div>
-    @endif
 
     <div class="card p-0 shadow-none">
         <div class="table-wrapper border-none rounded-xl">
@@ -68,7 +58,7 @@
                                     <a href="{{ route('users.edit', $user->id) }}" class="btn-ghost px-2 py-1 text-[13px] border border-hairline">Edit</a>
                                     
                                     @if(auth()->id() !== $user->id)
-                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="m-0" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="m-0 form-delete">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn-ghost px-2 py-1 text-[13px] border border-hairline text-[#d45656]">Delete</button>
@@ -90,4 +80,30 @@
             </table>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteForms = document.querySelectorAll('.form-delete');
+        deleteForms.forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d45656',
+                    cancelButtonColor: '#888888',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>
 @endsection
