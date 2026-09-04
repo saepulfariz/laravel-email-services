@@ -5,33 +5,44 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class RoleController extends Controller
+class RoleController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:roles.view', only: ['index']),
+            new Middleware('permission:roles.create', only: ['create', 'store']),
+            new Middleware('permission:roles.edit', only: ['edit', 'update']),
+            new Middleware('permission:roles.delete', only: ['destroy']),
+        ];
+    }
     public function index(Request $request)
     {
         $query = Role::query();
-        
+
         if ($request->filled('search')) {
             $query->where('name', 'like', "%{$request->search}%");
         }
-        
+
         $sort = $request->get('sort', 'created_at');
         $direction = $request->get('direction', 'desc');
-        
+
         $allowedSorts = ['name', 'created_at'];
         if (in_array($sort, $allowedSorts)) {
             $query->orderBy($sort, $direction === 'asc' ? 'asc' : 'desc');
         }
-        
+
         $roles = $query->paginate(10)->withQueryString();
-        
+
         return view('roles.index', compact('roles'));
     }
 
     public function create()
     {
-        $permissions = Permission::all()->groupBy(function($item) {
+        $permissions = Permission::all()->groupBy(function ($item) {
             return preg_split('/[^a-zA-Z0-9]/', $item->name)[0] ?? 'Other';
         });
         return view('roles.create', compact('permissions'));
@@ -44,7 +55,7 @@ class RoleController extends Controller
         ]);
 
         $role = Role::create(['name' => $request->name]);
-        
+
         if ($request->has('permissions')) {
             $role->syncPermissions($request->permissions);
         }
@@ -54,11 +65,11 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = Permission::all()->groupBy(function($item) {
+        $permissions = Permission::all()->groupBy(function ($item) {
             return preg_split('/[^a-zA-Z0-9]/', $item->name)[0] ?? 'Other';
         });
         $rolePermissions = $role->permissions->pluck('name')->toArray();
-        
+
         return view('roles.edit', compact('role', 'permissions', 'rolePermissions'));
     }
 
@@ -69,7 +80,7 @@ class RoleController extends Controller
         ]);
 
         $role->update(['name' => $request->name]);
-        
+
         $role->syncPermissions($request->permissions ?? []);
 
         return redirect()->route('roles.index')->with('success', 'Role updated successfully.');

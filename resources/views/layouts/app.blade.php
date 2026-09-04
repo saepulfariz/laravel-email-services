@@ -36,9 +36,15 @@
         <div class="nav-links">
             @auth
                 <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">Dashboard</a>
-                <a href="/users" class="{{ request()->is('users*') ? 'active' : '' }}">Users</a>
-                <a href="/roles" class="{{ request()->is('roles*') ? 'active' : '' }}">Roles</a>
-                <a href="/permissions" class="{{ request()->is('permissions*') ? 'active' : '' }}">Permissions</a>
+                @can('users.view')
+                    <a href="/users" class="{{ request()->is('users*') ? 'active' : '' }}">Users</a>
+                @endcan
+                @can('roles.view')
+                    <a href="/roles" class="{{ request()->is('roles*') ? 'active' : '' }}">Roles</a>
+                @endcan
+                @can('permissions.view')
+                    <a href="/permissions" class="{{ request()->is('permissions*') ? 'active' : '' }}">Permissions</a>
+                @endcan
             @endauth
             <a href="/api/documentation">API Reference</a>
         </div>
@@ -67,9 +73,16 @@
                         Activity</a>
 
                     <div class="sidebar-section">Configuration</div>
-                    <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}">Manage Users</a>
-                    <a href="/roles" class="sidebar-item {{ request()->is('roles*') ? 'active' : '' }}">Manage Roles</a>
-                    <a href="/permissions" class="sidebar-item {{ request()->is('permissions*') ? 'active' : '' }}">Manage Permissions</a>
+                    @can('users.view')
+                        <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}">Manage Users</a>
+                    @endcan
+                    @can('roles.view')
+                        <a href="/roles" class="sidebar-item {{ request()->is('roles*') ? 'active' : '' }}">Manage Roles</a>
+                    @endcan
+                    @can('permissions.view')
+                        <a href="/permissions" class="sidebar-item {{ request()->is('permissions*') ? 'active' : '' }}">Manage
+                            Permissions</a>
+                    @endcan
                     <a href="#" class="sidebar-item">API Keys</a>
                 </div>
 

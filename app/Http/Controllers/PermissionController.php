@@ -4,27 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PermissionController extends Controller
+class PermissionController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:permissions.view', only: ['index']),
+            new Middleware('permission:permissions.create', only: ['create', 'store']),
+            new Middleware('permission:permissions.edit', only: ['edit', 'update']),
+            new Middleware('permission:permissions.delete', only: ['destroy']),
+        ];
+    }
+
     public function index(Request $request)
     {
         $query = Permission::query();
-        
+
         if ($request->filled('search')) {
             $query->where('name', 'like', "%{$request->search}%");
         }
-        
+
         $sort = $request->get('sort', 'created_at');
         $direction = $request->get('direction', 'desc');
-        
+
         $allowedSorts = ['name', 'created_at'];
         if (in_array($sort, $allowedSorts)) {
             $query->orderBy($sort, $direction === 'asc' ? 'asc' : 'desc');
         }
-        
+
         $permissions = $query->paginate(10)->withQueryString();
-        
+
         return view('permissions.index', compact('permissions'));
     }
 

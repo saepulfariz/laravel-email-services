@@ -10,9 +10,20 @@ use Illuminate\Validation\Rule;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:users.view', only: ['index']),
+            new Middleware('permission:users.create', only: ['create', 'store']),
+            new Middleware('permission:users.edit', only: ['edit', 'update']),
+            new Middleware('permission:users.delete', only: ['destroy']),
+        ];
+    }
     /**
      * Get the base query for users with search and sort applied.
      */
@@ -23,17 +34,17 @@ class UserController extends Controller
         // Search
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%")
-                  ->orWhere('username', 'like', "%{$search}%");
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('username', 'like', "%{$search}%");
             });
         }
 
         // Sort
         $sort = $request->get('sort', 'created_at');
         $direction = $request->get('direction', 'desc');
-        
+
         // Validate sort columns to prevent SQL injection
         $allowedSorts = ['name', 'email', 'is_active', 'created_at'];
         if (in_array($sort, $allowedSorts)) {
