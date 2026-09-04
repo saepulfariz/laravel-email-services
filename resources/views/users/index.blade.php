@@ -47,6 +47,7 @@
                         <th><a href="{{ sortUrl('name') }}" class="flex items-center no-underline hover:text-ink">User {!! sortIcon('name') !!}</a></th>
                         <th><a href="{{ sortUrl('email') }}" class="flex items-center no-underline hover:text-ink">Email {!! sortIcon('email') !!}</a></th>
                         <th><a href="{{ sortUrl('is_active') }}" class="flex items-center no-underline hover:text-ink">Status {!! sortIcon('is_active') !!}</a></th>
+                        <th>Roles</th>
                         <th><a href="{{ sortUrl('created_at') }}" class="flex items-center no-underline hover:text-ink">Joined {!! sortIcon('created_at') !!}</a></th>
                         <th>Actions</th>
                     </tr>
@@ -79,6 +80,11 @@
                                     <span class="badge" style="background: var(--surface); color: var(--steel);">Inactive</span>
                                 @endif
                             </td>
+                            <td>
+                                @foreach($user->roles as $role)
+                                    <span class="badge" style="background: var(--surface); color: var(--ink);">{{ $role->name }}</span>
+                                @endforeach
+                            </td>
                             <td class="text-steel">{{ $user->created_at->format('M d, Y') }}</td>
                             <td>
                                 <div class="flex gap-2">
@@ -96,7 +102,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="empty-state">
                                     No users found.
                                 </div>

@@ -20,4 +20,7 @@ Route::middleware('auth')->group(function () {
     
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('users', UserController::class)->except(['show']);
+
+    Route::resource('roles', \App\Http\Controllers\RoleController::class)->except(['show']);
+    Route::resource('permissions', \App\Http\Controllers\PermissionController::class)->except(['show']);
 });

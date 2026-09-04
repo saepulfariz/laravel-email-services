@@ -28,6 +28,7 @@ class UsersExport implements FromQuery, WithHeadings, WithMapping
             'Username',
             'Email',
             'Status',
+            'Roles',
             'Joined At',
         ];
     }
@@ -40,6 +41,7 @@ class UsersExport implements FromQuery, WithHeadings, WithMapping
             $user->username ? '@' . $user->username : '-',
             $user->email,
             $user->is_active ? 'Active' : 'Inactive',
+            $user->roles->pluck('name')->join(', '),
             $user->created_at->format('Y-m-d H:i:s'),
         ];
     }

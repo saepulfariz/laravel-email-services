@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -64,7 +65,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -79,6 +81,8 @@ class UserController extends Controller
             'password' => 'required|string|min:8|confirmed',
             'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
+            'roles' => 'nullable|array',
+            'roles.*' => 'exists:roles,name',
         ]);
 
         $data = [
@@ -93,7 +97,11 @@ class UserController extends Controller
             $data['image'] = $request->file('image')->store('users', 'public');
         }
 
-        User::create($data);
+        $user = User::create($data);
+
+        if ($request->has('roles')) {
+            $user->syncRoles($request->roles);
+        }
 
         return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
@@ -103,7 +111,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        $roles = Role::all();
+        $userRoles = $user->roles->pluck('name')->toArray();
+        return view('users.edit', compact('user', 'roles', 'userRoles'));
     }
 
     /**
@@ -118,6 +128,8 @@ class UserController extends Controller
             'password' => 'nullable|string|min:8|confirmed',
             'is_active' => 'boolean',
             'image' => 'nullable|image|max:2048',
+            'roles' => 'nullable|array',
+            'roles.*' => 'exists:roles,name',
         ]);
 
         $data = [
@@ -139,6 +151,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
+        $user->syncRoles($request->roles ?? []);
 
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }

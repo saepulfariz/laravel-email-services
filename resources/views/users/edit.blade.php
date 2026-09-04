@@ -53,6 +53,22 @@
                 </label>
             </div>
 
+            <div class="input-group">
+                <label>Roles</label>
+                <div class="mt-2">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        @foreach($roles as $role)
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" name="roles[]" value="{{ $role->name }}" 
+                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring focus:ring-indigo-200"
+                                {{ in_array($role->name, old('roles', $userRoles)) ? 'checked' : '' }}>
+                            <span class="text-sm font-medium text-ink">{{ $role->name }}</span>
+                        </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
             <div class="my-8 pt-4 border-t border-hairline-soft">
                 <p class="text-sm text-steel mb-4">Leave password fields blank if you don't want to change the password.</p>
             </div>
