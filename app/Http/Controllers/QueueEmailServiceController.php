@@ -148,7 +148,7 @@ class QueueEmailServiceController extends Controller
 
         // Handle uploaded files
         $attachments = $request->input('attachments', []);
-        
+
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store('attachments', 'public');

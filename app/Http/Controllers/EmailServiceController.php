@@ -216,12 +216,12 @@ class EmailServiceController extends Controller
     public function send(Request $request, EmailService $emailService)
     {
         //  API KEY VALIDATION
-        if ($request->query('apikey') !== env('MAIL_API_KEY')) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Invalid API Key'
-            ], 401);
-        }
+        // if ($request->query('apikey') !== env('MAIL_API_KEY')) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Invalid API Key'
+        //     ], 401);
+        // }
 
         $request->validate([
             'to' => 'required|string',
@@ -231,7 +231,7 @@ class EmailServiceController extends Controller
 
         // Handle uploaded files
         $attachments = $request->input('attachments', []);
-        
+
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 $path = $file->store('attachments', 'public');

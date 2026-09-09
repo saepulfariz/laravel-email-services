@@ -45,6 +45,15 @@
                 @can('permissions.view')
                     <a href="/permissions" class="{{ request()->is('permissions*') ? 'active' : '' }}">Permissions</a>
                 @endcan
+                @can('services.view')
+                    <a href="/services" class="{{ request()->is('services*') ? 'active' : '' }}">Services</a>
+                @endcan
+                @can('api-keys.view')
+                    <a href="/api-keys" class="{{ request()->is('api-keys*') ? 'active' : '' }}">API Keys</a>
+                @endcan
+                @can('api-logs.view')
+                    <a href="/api-logs" class="{{ request()->is('api-logs*') ? 'active' : '' }}">API Logs</a>
+                @endcan
             @endauth
             <a href="/api/documentation">API Reference</a>
         </div>
@@ -83,7 +92,19 @@
                         <a href="/permissions" class="sidebar-item {{ request()->is('permissions*') ? 'active' : '' }}">Manage
                             Permissions</a>
                     @endcan
-                    <a href="#" class="sidebar-item">API Keys</a>
+
+                    <div class="sidebar-section">API Management</div>
+                    @can('services.view')
+                        <a href="/services" class="sidebar-item {{ request()->is('services*') ? 'active' : '' }}">
+                            Services</a>
+                    @endcan
+                    @can('api-keys.view')
+                        <a href="/api-keys" class="sidebar-item {{ request()->is('api-keys*') ? 'active' : '' }}">API Keys</a>
+                    @endcan
+                    @can('api-logs.view')
+                        <a href="/api-logs" class="sidebar-item {{ request()->is('api-logs*') ? 'active' : '' }}">API Logs</a>
+                    @endcan
+
                 </div>
 
                 <div class="mt-auto pt-4 border-t border-hairline-soft flex items-center gap-3 px-2">

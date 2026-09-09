@@ -11,6 +11,6 @@ use App\Http\Controllers\TestController;
 // })->middleware('auth:sanctum');
 Route::get('/test', [TestController::class, 'index']);
 
-Route::post('/email-services', [QueueEmailServiceController::class, 'send']);
-Route::post('/d/email-services', [EmailServiceController::class, 'send']);
-Route::post('/q/email-services', [QueueEmailServiceController::class, 'send']);
+Route::post('/email-services', [QueueEmailServiceController::class, 'send'])->middleware('api-services:email-service');
+Route::post('/d/email-services', [EmailServiceController::class, 'send'])->middleware('api-services:email-service');
+Route::post('/q/email-services', [QueueEmailServiceController::class, 'send'])->middleware('api-services:email-service');
