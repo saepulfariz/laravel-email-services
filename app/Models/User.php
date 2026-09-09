@@ -49,4 +49,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function ssoAccounts()
+    {
+        return $this->hasMany(UserSsoAccount::class, 'user_id', 'id');
+    }
 }

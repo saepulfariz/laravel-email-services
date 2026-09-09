@@ -90,7 +90,7 @@
                         <tr>
                             <td colspan="3">
                                 <div class="empty-state">
-                                    No roles found.
+                                    No SSO Provider found.
                                 </div>
                             </td>
                         </tr>

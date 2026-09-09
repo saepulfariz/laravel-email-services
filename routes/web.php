@@ -39,4 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('services', \App\Http\Controllers\ServiceController::class)->except(['show']);
     Route::resource('api-keys', \App\Http\Controllers\ApiKeyController::class)->except(['show']);
     Route::get('/api-logs', [\App\Http\Controllers\ApiLogController::class, 'index'])->name('api-logs.index');
+
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });

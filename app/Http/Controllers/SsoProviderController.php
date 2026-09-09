@@ -53,7 +53,12 @@ class SsoProviderController extends Controller implements HasMiddleware
             'can_register' => 'nullable|boolean',
         ]);
 
-        SsoProvider::create($request->all());
+        $ssoProvider = new SsoProvider();
+        $ssoProvider->name = $request->name;
+        $ssoProvider->icon = $request->icon;
+        $ssoProvider->is_active = $request->is_active == 'on';
+        $ssoProvider->can_register = $request->can_register == 'on';
+        $ssoProvider->save();
 
         return redirect()->route('sso-providers.index')->with('success', 'Data berhasil ditambahkan');
     }

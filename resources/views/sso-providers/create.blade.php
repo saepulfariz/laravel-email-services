@@ -33,13 +33,12 @@
 
             <div class="input-group">
                 <label for="is_active">SSO Provider Active</label>
-                <input type="checkbox" id="is_active" name="is_active" class="text-input" value="{{ old('is_active') }}">
+                <input type="checkbox" id="is_active" name="is_active" class="text-input" {{ old('is_active') ? 'checked' : '' }} value="on">
             </div>
 
             <div class="input-group">
                 <label for="can_register">SSO Provider Can Register</label>
-                <input type="checkbox" id="can_register" name="can_register" class="text-input"
-                    value="{{ old('can_register') }}">
+                <input type="checkbox" id="can_register" name="can_register" class="text-input" {{ old('can_register') ? 'checked' : '' }} value="on">
             </div>
 
             <div class="mt-6">
