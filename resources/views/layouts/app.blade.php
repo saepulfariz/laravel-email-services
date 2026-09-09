@@ -83,14 +83,18 @@
 
                     <div class="sidebar-section">Configuration</div>
                     @can('users.view')
-                        <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}">Manage Users</a>
+                        <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}"> Users</a>
                     @endcan
                     @can('roles.view')
-                        <a href="/roles" class="sidebar-item {{ request()->is('roles*') ? 'active' : '' }}">Manage Roles</a>
+                        <a href="/roles" class="sidebar-item {{ request()->is('roles*') ? 'active' : '' }}"> Roles</a>
                     @endcan
                     @can('permissions.view')
-                        <a href="/permissions" class="sidebar-item {{ request()->is('permissions*') ? 'active' : '' }}">Manage
+                        <a href="/permissions" class="sidebar-item {{ request()->is('permissions*') ? 'active' : '' }}">
                             Permissions</a>
+                    @endcan
+                    @can('sso-providers.view')
+                        <a href="/sso-providers" class="sidebar-item {{ request()->is('sso-providers*') ? 'active' : '' }}">SSO
+                            Providers</a>
                     @endcan
 
                     <div class="sidebar-section">API Management</div>

@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('roles', \App\Http\Controllers\RoleController::class)->except(['show']);
     Route::resource('permissions', \App\Http\Controllers\PermissionController::class)->except(['show']);
+    Route::resource('sso-providers', \App\Http\Controllers\SsoProviderController::class)->except(['show']);
 
     // API Management CRUD (Services, Keys, Logs)
     Route::resource('services', \App\Http\Controllers\ServiceController::class)->except(['show']);
