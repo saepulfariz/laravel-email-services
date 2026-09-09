@@ -7,6 +7,16 @@ Route::redirect('/', '/api/documentation');
 use App\Models\EmailLog;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SsoController;
+
+// Endpoint untuk login/redirect
+Route::get('auth/{provider}', [SsoController::class, 'redirectToProvider'])->name('sso.redirect');
+Route::get('auth/{provider}/callback', [SsoController::class, 'handleProviderCallback'])->name('sso.callback');
+
+// Endpoint yang butuh autentikasi (untuk melepas SSO)
+Route::middleware('auth')->group(function () {
+    Route::delete('auth/{provider}/unlink', [SsoController::class, 'unlinkProvider'])->name('sso.unlink');
+});
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
