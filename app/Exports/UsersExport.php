@@ -15,7 +15,7 @@ class UsersExport implements FromQuery, WithHeadings, WithMapping
         $this->query = $query;
     }
 
-    public function query()
+    public function query(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
     {
         return $this->query;
     }
