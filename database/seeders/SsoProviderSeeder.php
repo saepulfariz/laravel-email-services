@@ -36,7 +36,7 @@ class SsoProviderSeeder extends Seeder
         // seed sso-providers
         $ssoProviders = [
             [
-                'name' => 'LDAP',
+                'name' => 'ldap',
                 'icon' => '-',
                 'is_active' => true,
                 'can_register' => false,
