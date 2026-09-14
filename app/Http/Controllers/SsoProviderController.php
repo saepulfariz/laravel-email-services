@@ -77,6 +77,8 @@ class SsoProviderController extends Controller implements HasMiddleware
             'can_register' => 'nullable',
         ]);
 
+        $ssoProvider->name = $request->name;
+        $ssoProvider->icon = $request->icon;
         $ssoProvider->is_active = $request->is_active == 'on';
         $ssoProvider->can_register = $request->can_register == 'on';
         $ssoProvider->save();
