@@ -31,6 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('users', UserController::class)->except(['show']);
 
+    Route::get('/email-logs/{id}/body', [\App\Http\Controllers\EmailLogController::class, 'showBody'])->name('email-logs.body');
+    Route::get('/email-logs', [\App\Http\Controllers\EmailLogController::class, 'index'])->name('email-logs.index');
+
     Route::resource('roles', \App\Http\Controllers\RoleController::class)->except(['show']);
     Route::resource('permissions', \App\Http\Controllers\PermissionController::class)->except(['show']);
     Route::resource('sso-providers', \App\Http\Controllers\SsoProviderController::class)->except(['show']);

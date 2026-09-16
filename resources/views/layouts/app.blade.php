@@ -45,6 +45,9 @@
                 @can('permissions.view')
                     <a href="/permissions" class="{{ request()->is('permissions*') ? 'active' : '' }}">Permissions</a>
                 @endcan
+                @can('email-logs.view')
+                    <a href="/email-logs" class="{{ request()->is('email-logs*') ? 'active' : '' }}">Email Logs</a>
+                @endcan
                 @can('services.view')
                     <a href="/services" class="{{ request()->is('services*') ? 'active' : '' }}">Services</a>
                 @endcan
@@ -54,6 +57,7 @@
                 @can('api-logs.view')
                     <a href="/api-logs" class="{{ request()->is('api-logs*') ? 'active' : '' }}">API Logs</a>
                 @endcan
+
             @endauth
             <a href="/api/documentation">API Reference</a>
         </div>
@@ -77,11 +81,10 @@
             <div class="overlay" onclick="toggleSidebar()"></div>
             <aside class="sidebar" id="sidebar">
                 <div class="flex-1 flex flex-col gap-2">
-                    <div class="sidebar-section">Overview</div>
-                    <a href="/dashboard" class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">Recent
-                        Activity</a>
+                    <div class="sidebar-section font-bold " style="color: var(--color-brand-green-deep)">Overview</div>
+                    <a href="/dashboard" class="sidebar-item {{ request()->is('dashboard') ? 'active' : '' }}">Dashboard</a>
 
-                    <div class="sidebar-section">Configuration</div>
+                    <div class="sidebar-section font-bold " style="color: var(--color-brand-green-deep)">Configuration</div>
                     @can('users.view')
                         <a href="/users" class="sidebar-item {{ request()->is('users*') ? 'active' : '' }}"> Users</a>
                     @endcan
@@ -96,8 +99,12 @@
                         <a href="/sso-providers" class="sidebar-item {{ request()->is('sso-providers*') ? 'active' : '' }}">SSO
                             Providers</a>
                     @endcan
-
-                    <div class="sidebar-section">API Management</div>
+                    @can('email-logs.view')
+                        <a href="/email-logs" class="sidebar-item {{ request()->is('email-logs*') ? 'active' : '' }}">Email
+                            Logs</a>
+                    @endcan
+                    <div class="sidebar-section font-bold " style="color: var(--color-brand-green-deep)">API Management
+                    </div>
                     @can('services.view')
                         <a href="/services" class="sidebar-item {{ request()->is('services*') ? 'active' : '' }}">
                             Services</a>
@@ -109,10 +116,12 @@
                         <a href="/api-logs" class="sidebar-item {{ request()->is('api-logs*') ? 'active' : '' }}">API Logs</a>
                     @endcan
 
+
                 </div>
 
                 <div class="mt-auto pt-4 border-t border-hairline-soft px-2">
-                    <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 hover:bg-surface p-2 rounded-xl transition-colors no-underline">
+                    <a href="{{ route('profile.edit') }}"
+                        class="flex items-center gap-3 hover:bg-surface p-2 rounded-xl transition-colors no-underline">
                         @if(auth()->user()->image)
                             <img src="{{ Storage::url(auth()->user()->image) }}" alt="Profile"
                                 class="w-9 h-9 rounded-full object-cover border border-hairline shrink-0">

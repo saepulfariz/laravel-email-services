@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             ApiManagementPermissionSeeder::class,
             SsoProviderSeeder::class,
+            EmailLogSeeder::class,
         ]);
     }
 }
