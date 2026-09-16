@@ -23,6 +23,15 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+
+            // check is_active
+            if (!Auth::user()->is_active) {
+                Auth::logout();
+                return back()->withErrors([
+                    'email' => 'Your account is not active.',
+                ])->onlyInput('email');
+            }
+
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
