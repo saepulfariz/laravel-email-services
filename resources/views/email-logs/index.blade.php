@@ -57,7 +57,10 @@
                 <tbody>
                     @forelse($emailLogs as $log)
                         <tr>
-                            <td>{{ $log->to }}</td>
+                            @php
+                                $toCount = explode(';', $log->to);
+                            @endphp
+                            <td>{{ count($toCount) > 1 ? $toCount[0] . ', ...' : $log->to }}</td>
                             <td>{{ \Illuminate\Support\Str::limit($log->subject, 30) }}</td>
                             <td>{{ $log->type }}</td>
                             <td>
@@ -165,7 +168,7 @@
                         </path>
                     </svg>
                 </div>
-                <iframe id="previewFrame" src="about:blank" class="w-full h-full border-0"
+                <iframe id="previewFrame" src="about:blank" class="w-full h-full border-0" style="height: 300px;"
                     onload="document.getElementById('previewLoader').style.display='none'"></iframe>
             </div>
         </div>

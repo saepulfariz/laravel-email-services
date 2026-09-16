@@ -23,10 +23,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        $logs = EmailLog::orderBy('created_at', 'desc')->take(10)->get();
-        return view('dashboard', compact('logs'));
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::resource('users', UserController::class)->except(['show']);
