@@ -133,12 +133,6 @@ class QueueEmailServiceController extends Controller
 
     public function send(Request $request)
     {
-        if ($request->query('apikey') !== env('MAIL_API_KEY')) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid API Key'
-            ], 401);
-        }
 
         $request->validate([
             'to' => 'required|string',
